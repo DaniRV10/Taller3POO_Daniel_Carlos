@@ -1,10 +1,21 @@
 package dominio;
 
 public class HechizoTierra extends Hechizo {
+	
+	private double mejoraDefensa;
 
-	public HechizoTierra(String nombre, String tipo, double daño) {
+	public HechizoTierra(String nombre, String tipo, double daño, double mejoraDefensa) {
 		super(nombre, tipo, daño);
-		// TODO Auto-generated constructor stub
+		this.mejoraDefensa = mejoraDefensa;
+		
+	}
+
+	public double getMejoraDefensa() {
+		return mejoraDefensa;
+	}
+
+	public void setMejoraDefensa(double mejoraDefensa) {
+		this.mejoraDefensa = mejoraDefensa;
 	}
 
 }
