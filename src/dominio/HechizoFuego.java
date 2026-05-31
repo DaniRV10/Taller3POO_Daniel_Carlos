@@ -17,5 +17,10 @@ public class HechizoFuego extends Hechizo {
 		this.duracionQuemadura = duracionQuemadura;
 	}
 
+	@Override
+	public double calcularPuntaje() {
+		return  getDaño() * duracionQuemadura;
+	}
+
 	
 }

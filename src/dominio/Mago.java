@@ -2,7 +2,7 @@ package dominio;
 
 import java.util.ArrayList;
 
-public class Mago {
+public class Mago implements Calculable {
 
 	private String nombre;
 	private ArrayList<Hechizo> hechizos;
@@ -33,7 +33,6 @@ public class Mago {
 		hechizos.add(hechizo);
 	}
 
-
 	public Hechizo buscarHechizo(String nombreHechizo) {
 		for (Hechizo h : hechizos) {
 			if (h.getNombre().equalsIgnoreCase(nombreHechizo)) {
@@ -41,6 +40,17 @@ public class Mago {
 			}
 		}
 		return null;
+	}
+
+	// Calcula el puntaje total del mago sumando los puntajes de cada uno de sus
+	// hechizos
+	@Override
+	public double calcularPuntaje() {
+		double total = 0;
+		for (Hechizo h : hechizos) {
+			total += h.calcularPuntaje();
+		}
+		return total;
 	}
 
 }

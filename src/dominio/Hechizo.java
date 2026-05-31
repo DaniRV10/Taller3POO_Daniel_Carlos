@@ -1,6 +1,6 @@
 package dominio;
 
-public abstract class Hechizo {
+public abstract class Hechizo implements Calculable {
 	
 	private String nombre;
 	private String tipo;
