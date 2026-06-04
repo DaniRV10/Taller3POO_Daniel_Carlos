@@ -9,6 +9,7 @@ public interface ISistema {
     void agregarMago(Mago m);
     Mago buscarMago(String nombre);
     boolean eliminarMago(Mago m);
+
     
     
     // HECHIZOS

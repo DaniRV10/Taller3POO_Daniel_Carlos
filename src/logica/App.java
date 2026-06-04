@@ -5,6 +5,7 @@ package logica;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import dominio.*;
@@ -140,8 +141,91 @@ public class App {
 	}
 
 	private static void nuevoMago() {
-		// TODO Auto-generated method stub
+		System.out.println("Creando un nuevo mago...");
+		System.out.print("Ingrese el nombre del mago: ");
+		String nombreM = sc.nextLine().trim();
+		if (s.buscarMago(nombreM)!=null) {
+			System.out.println("Error: Ya existe un mago registrado con ese nombre.");
+	        return;
+		}
+		Mago m= new Mago(nombreM);
 		
+		ArrayList<Hechizo> listaHechizos = s.getHechizos();
+		
+		while (m.getHechizos().isEmpty()) {
+	        System.out.println("ADVERTENCIA: Un mago debe dominar al menos un hechizo obligatoriamente.");
+	        
+	        Hechizo hSelected = seleccionarHechizo(m);
+	        
+	        if (hSelected != null) {
+	            m.agregarHechizo(hSelected);
+	            System.out.println("¡'" + hSelected.getNombre() + "' asignado con éxito!");
+	        } else {
+	            System.out.println("Selección inválida. Intente nuevamente.");
+	        }
+	    }
+			
+		System.out.println("¿Desea asignarle más hechizos al mago? (si/no)");
+	    String rpta = sc.nextLine().trim();
+	    while (rpta.equalsIgnoreCase("si")) {
+	        Hechizo hSelected = seleccionarHechizo(m);
+	        
+	        if (hSelected != null) {
+	            m.agregarHechizo(hSelected);
+	            System.out.println("¡Hechizo añadido!");
+	        } else {
+	            System.out.println("Selección inválida.");
+	        }
+	        System.out.println("¿Desea añadir otro hechizo? (si/no)");
+	        rpta = sc.nextLine().trim();
+	    }
+
+	    s.agregarMago(m);
+	    s.actualizarDatos();
+	    System.out.println("¡Mago registrado y guardado exitosamente!");
+		
+		
+		
+		
+	}
+	
+	private static Hechizo seleccionarHechizo(Mago mago) {
+	    ArrayList<Hechizo> listaGlobal = s.getHechizos();
+	    // Creamos una lista temporal para guardar solo los que el mago NO tiene
+	    ArrayList<Hechizo> hechizosDisponibles = new ArrayList<>();
+
+	    for (Hechizo h : listaGlobal) {
+	        // Si el mago NO tiene este hechizo en su lista, lo consideramos disponible
+	        if (!mago.getHechizos().contains(h)) {
+	            hechizosDisponibles.add(h);
+	        }
+	    }
+
+	    if (hechizosDisponibles.isEmpty()) {
+	        System.out.println("Este mago ya domina todos los hechizos existentes en el sistema.");
+	        return null;
+	    }
+
+	    System.out.println("\n--- HECHIZOS DISPONIBLES PARA " + mago.getNombre().toUpperCase() + " ---");
+	    for (int i = 0; i < hechizosDisponibles.size(); i++) {
+	        Hechizo h = hechizosDisponibles.get(i);
+	        System.out.println((i + 1) + ". " + h.getNombre() + " (" + h.getTipo() + ")");
+	    }
+	    System.out.print("Seleccione el número del hechizo a añadir: ");
+
+	    try {
+	        int indice = Integer.parseInt(sc.nextLine().trim()) - 1;
+
+	        if (indice >= 0 && indice < hechizosDisponibles.size()) {
+	            return hechizosDisponibles.get(indice); // Retorna el objeto real filtrado
+	        } else {
+	            System.out.println("Error: Número fuera de rango.");
+	        }
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Ingrese un número válido.");
+	    }
+
+	    return null;
 	}
 
 	
