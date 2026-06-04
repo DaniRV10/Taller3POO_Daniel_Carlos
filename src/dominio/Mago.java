@@ -53,4 +53,9 @@ public class Mago implements Calculable {
 		return total;
 	}
 
+	
 }
+
+
+
+

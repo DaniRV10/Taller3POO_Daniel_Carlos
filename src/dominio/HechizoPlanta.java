@@ -38,4 +38,11 @@ public class HechizoPlanta extends Hechizo {
 		return getDaño() + (duracionStun * cantPlantas);
 	}
 
+
+	@Override
+	public String datosParaTXT() {
+		
+		return this.getNombre() + ";Planta;" + (int)this.getDaño() + ";" + (int)this.duracionStun + "," + (int)this.cantPlantas;
+	}
+
 }

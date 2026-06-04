@@ -3,8 +3,18 @@ import dominio.*;
 
 public interface ISistema {
 	
-	void agregarHechizo(Hechizo h);
+	void actualizarDatos();
+	
+	// MAGOS
     void agregarMago(Mago m);
-    Hechizo buscarHechizo(String nombre);
     Mago buscarMago(String nombre);
+    boolean eliminarMago(Mago m);
+    
+    
+    // HECHIZOS
+    void agregarHechizo(Hechizo h);
+    Hechizo buscarHechizo(String nombre);
+    boolean eliminarHechizo(Hechizo h);
+    
+    
 }

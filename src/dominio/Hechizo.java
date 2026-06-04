@@ -24,10 +24,7 @@ public abstract class Hechizo implements Calculable {
 		return daño;
 	}
 
-	@Override
-	public String toString() {
-		return "Hechizo [nombre=" + nombre + ", tipo=" + tipo + ", daño=" + daño + "]";
-	}
+	public abstract String datosParaTXT();
 	
 	
 	

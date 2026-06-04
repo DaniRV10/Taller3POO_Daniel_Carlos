@@ -23,4 +23,10 @@ public class HechizoTierra extends Hechizo {
 		return (getDaño()*mejoraDefensa) / 2.0;
 	}
 
+	@Override
+	public String datosParaTXT() {
+		
+		return this.getNombre() + ";Tierra;" + (int)this.getDaño() + ";" + (int)this.mejoraDefensa;
+	}
+
 }

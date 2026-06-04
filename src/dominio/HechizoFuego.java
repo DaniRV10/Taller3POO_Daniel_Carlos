@@ -22,5 +22,10 @@ public class HechizoFuego extends Hechizo {
 		return  getDaño() * duracionQuemadura;
 	}
 
+	@Override
+	public String datosParaTXT() {
+		return this.getNombre() + ";Fuego;" + (int)this.getDaño() + ";" + (int)this.duracionQuemadura;
+	}
+
 	
 }
