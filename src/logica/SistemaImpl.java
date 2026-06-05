@@ -45,7 +45,7 @@ public class SistemaImpl implements ISistema{
 	public boolean eliminarHechizo(Hechizo h) {
 		if (h == null) return false;
 
-	    // 1. Primero removemos el hechizo de todos los magos buscando por NOMBRE
+	    //  Primero removemos el hechizo de todos los magos buscando por NOMBRE
 	    for (Mago m : this.magos) {
 	        // Recorremos los hechizos del mago al revés para evitar errores al remover elementos de la lista
 	        ArrayList<Hechizo> hechizosMago = m.getHechizos();
@@ -56,10 +56,32 @@ public class SistemaImpl implements ISistema{
 	        }
 	    }
 
-	    // 2. Ahora lo removemos de la lista global del catálogo
+	    //Ahora se remueve de la lista global 
 	    return this.hechizos.remove(h);
 	}
-
+	
+	
+	@Override
+	public ArrayList<Hechizo> obtenerTop10Hechizos() {
+	    // Clonamos la lista original para proteger el orden de los archivos .txt
+	    ArrayList<Hechizo> clonHechizos = new ArrayList<>(this.hechizos);
+	    
+	    // Ordenamos de Mayor a Menor por puntaje
+	    clonHechizos.sort((h1, h2) -> Double.compare(h2.calcularPuntaje(), h1.calcularPuntaje()));
+	    
+	    // Extraemos solo los 10 primeros (o menos si no hay suficientes)
+	    ArrayList<Hechizo> top10 = new ArrayList<>();
+	    int tope = Math.min(10, clonHechizos.size());
+	    for (int i = 0; i < tope; i++) {
+	        top10.add(clonHechizos.get(i));
+	    }
+	    return top10;
+	}
+	
+	@Override
+	public String obtenerCatalogoHechizosTexto(boolean mostrarPuntaje) {
+	    
+	}
 
 // MAGOS
 	@Override
@@ -80,6 +102,26 @@ public class SistemaImpl implements ISistema{
             if (m.getNombre().equalsIgnoreCase(nombre)) return m;
         }
         return null;
+	}
+	
+	@Override
+	public ArrayList<Mago> obtenerTop3Magos() {
+		// Clonamos la lista original para proteger el orden de los archivos .txt
+	    ArrayList<Mago> clonMagos = new ArrayList<>(this.magos);
+	 // Ordenamos de Mayor a Menor por puntaje
+	    clonMagos.sort((m1, m2) -> Double.compare(m2.calcularPuntaje(), m1.calcularPuntaje()));
+	 // Extraemos solo los 10 primeros (o menos si no hay suficientes)
+	    ArrayList<Mago> top3 = new ArrayList<>();
+	    int tope = Math.min(3, clonMagos.size());
+	    for (int i = 0; i < tope; i++) {
+	        top3.add(clonMagos.get(i));
+	    }
+	    return top3;
+	}
+	
+	@Override
+	public String obtenerRegistroMagosTexto(boolean mostrarPuntaje) {
+	   
 	}
 	
 

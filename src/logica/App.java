@@ -203,7 +203,7 @@ public class App {
 	}
 
 	private static void modificarHechizo() {
-		System.out.println("\n===== MODIFICANDO HECHIZO =====");
+		System.out.println("===== MODIFICANDO HECHIZO =====");
 	    
 	    // 1. Mostrar la lista numerada de hechizos
 	    ArrayList<Hechizo> listaGlobal = s.getHechizos();
@@ -370,7 +370,7 @@ public class App {
 	}
 
 	private static void modificarMago() {
-		System.out.println("\n===== MODIFICAR MAGO =====");
+		System.out.println("===== MODIFICANDO MAGO =====");
 	    
 	    // 1. Mostrar la lista numerada de magos registrados
 	    ArrayList<Mago> listaMagos = s.getMagos();
@@ -391,18 +391,20 @@ public class App {
 	            m = listaMagos.get(indice);
 	        } else {
 	            System.out.println("Error: Número fuera de rango.");
+	            System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
 	            return;
 	        }
 	    } catch (NumberFormatException e) {
 	        System.out.println("Error: Ingrese un número válido.");
+	        System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
 	        return;
 	    }
 
 	    // 2. Sub-bucle de modificación interactiva para el mago seleccionado
 	    boolean finalizarModificacion = false;
 	    while (!finalizarModificacion) {
-	        System.out.println("\n-------------------------------------------");
-	        System.out.println("Modificando Mago: " + m.getNombre().toUpperCase());
+	        
+	        System.out.println(" ==== MODIFICANDO MAGO " + m.getNombre().toUpperCase());
 	        System.out.println("Hechizos actuales: ");
 	        if (m.getHechizos().isEmpty()) {
 	            System.out.println("  [Ninguno]");
@@ -411,7 +413,7 @@ public class App {
 	                System.out.println("  - " + h.getNombre() + " (" + h.getTipo() + ")");
 	            }
 	        }
-	        System.out.println("-------------------------------------------");
+	       System.out.println();
 	        System.out.println("1. Cambiar nombre del mago");
 	        System.out.println("2. Agregarle un hechizo");
 	        System.out.println("3. Eliminarle un hechizo");
@@ -455,7 +457,7 @@ public class App {
 	                    break;
 	                }
 	                
-	                System.out.println("\n--- SELECCIONE EL HECHIZO A ELIMINAR ---");
+	                System.out.println("--- SELECCIONE EL HECHIZO A ELIMINAR ---");
 	                ArrayList<Hechizo> hechizosMago = m.getHechizos();
 	                for (int i = 0; i < hechizosMago.size(); i++) {
 	                    System.out.println((i + 1) + ". " + hechizosMago.get(i).getNombre());
@@ -473,6 +475,7 @@ public class App {
 	                    }
 	                } catch (NumberFormatException e) {
 	                    System.out.println("Error: Entrada inválida.");
+	                    System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
 	                }
 	                break;
 	                
@@ -487,6 +490,8 @@ public class App {
 	        }
 	    }
 		
+
+	
 	}
 
 	private static void nuevoMago() {
@@ -581,10 +586,111 @@ public class App {
 	//PANEL ANALISTA
 	
 	private static void menuAnalista() {
+		String opcion = "";
+	    do {
+	        System.out.println("===== MENU ANALISTA =====");
+	        System.out.println("1. Top 10 Mejores Hechizos");
+	        System.out.println("2. Top 3 Mejores Magos");
+	        System.out.println("3. Mostrar todos los Hechizos");
+	        System.out.println("4. Mostrar todos los Magos");
+	        System.out.println("5. Mostrar todos los Hechizos junto a su puntuación");
+	        System.out.println("6. Mostrar todos los magos junto a su puntuación");
+	        System.out.println("7. Volver al menú principal");
+	        System.out.print("> ");
+	        
+	        opcion = sc.nextLine().trim();
+	        switch (opcion) {
+	            case "1":
+	                analistaTop10Hechizos();
+	                break;
+	            case "2":
+	                analistaTop3Magos();
+	                break;
+	            case "3":
+	                analistaMostrarTodosHechizos(false); // false = sin puntaje
+	                break;
+	            case "4":
+	                analistaMostrarTodosMagos(false); // false = sin puntaje
+	                break;
+	            case "5":
+	                analistaMostrarTodosHechizos(true); // true = con puntaje
+	                break;
+	            case "6":
+	                analistaMostrarTodosMagos(true); // true = con puntaje
+	                break;
+	            case "7":
+	                System.out.println("Volviendo al menú principal....");
+	                break;
+	            default:
+	                System.out.println("Ingrese una opción válida.");
+	                break;
+	        }
+	    } while (!opcion.equals("7"));
 		
 		
 	}
 	
+	// TOP 10 HECHIZOS
+	private static void analistaTop10Hechizos() {
+	    System.out.println("===== TOP 10 MEJORES HECHIZOS =====");
+	    ArrayList<Hechizo> top10 = s.obtenerTop10Hechizos();
+	    
+	    if (top10.isEmpty()) {
+	        System.out.println("No hay hechizos registrados en el sistema.");
+	        return;
+	    }
+	    
+	    for (int i = 0; i < top10.size(); i++) {
+	        Hechizo h = top10.get(i);
+	        System.out.println((i + 1) + ". " + h.getNombre() + " (" + h.getTipo() + ") - Puntaje: " + h.calcularPuntaje());
+	    }
+	}
+
+	// TOP 3 MEJORES MAGOS
+	private static void analistaTop3Magos() {
+	    System.out.println("===== TOP 3 MEJORES MAGOS =====");
+	    ArrayList<Mago> top3 = s.obtenerTop3Magos();
+	    
+	    if (top3.isEmpty()) {
+	        System.out.println("No hay magos registrados en el sistema.");
+	        return;
+	    }
+	    
+	    for (int i = 0; i < top3.size(); i++) {
+	        Mago m = top3.get(i);
+	        System.out.println((i + 1) + ". Mago: " + m.getNombre() + " - Puntaje Total: " + m.calcularPuntaje());
+	    }
+	}
+	
+	// MOSTRAR TODOS LOS HECHIZOS 
+	private static void analistaMostrarTodosHechizos(boolean mostrarPuntaje) {
+	    
+	}
+
+	// MOSTRAR TODOS LOS MAGOS 
+	private static void analistaMostrarTodosMagos(boolean mostrarPuntaje) {
+	    System.out.println("===== REGISTRO GENERAL DE MAGOS =====");
+	    ArrayList<Mago> lista = s.getMagos();
+	    
+	    if (lista.isEmpty()) {
+	        System.out.println("No hay magos registrados.");
+	        return;
+	    }
+
+	    for (Mago m : lista) {
+	        System.out.print("- Mago: " + m.getNombre());
+	        if (mostrarPuntaje) {//EN CASO DE PEDIR PUNTAJE
+	            System.out.println(" -> PUNTUACIÓN TOTAL ACCUMULADA: " + m.calcularPuntaje() );
+	        }
+	        System.out.println(" Hechizos que posee:");
+	        
+	        for (Hechizo h : m.getHechizos()) {
+	            System.out.println("    * " + h.getNombre() + " (" + h.getTipo() + ")");
+	        }
+	        System.out.println(); 
+	    }
+	}
+
 	//LECTURA ARCHIVOS
 
 	private static void cargarHechizos() throws FileNotFoundException {
