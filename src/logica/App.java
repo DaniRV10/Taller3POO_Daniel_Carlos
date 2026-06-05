@@ -664,7 +664,23 @@ public class App {
 	
 	// MOSTRAR TODOS LOS HECHIZOS 
 	private static void analistaMostrarTodosHechizos(boolean mostrarPuntaje) {
-	    
+		System.out.println("===== CATALOGO GENERAL DE HECHIZOS =====");
+		ArrayList<Hechizo> lista = s.getHechizos();
+		    
+		if (lista.isEmpty()) {
+			System.out.println("No hay hechizos registrados.");
+			return;
+		}
+
+		for (Hechizo h : lista) {
+			String info = "- " + h.getNombre() + " (Tipo: " + h.getTipo() + ", Daño Base: " + (int)h.getDaño() + ")";
+			if (mostrarPuntaje) { //EN CASO DE PEDIR PUNTAJE
+				info += " -> [PUNTUACIÓN CALCULADA: " + h.calcularPuntaje() + "]";
+			}
+			System.out.println(info);
+		
+		
+		}
 	}
 
 	// MOSTRAR TODOS LOS MAGOS 

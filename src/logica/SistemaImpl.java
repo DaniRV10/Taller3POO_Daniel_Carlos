@@ -80,6 +80,22 @@ public class SistemaImpl implements ISistema{
 	
 	@Override
 	public String obtenerCatalogoHechizosTexto(boolean mostrarPuntaje) {
+		if (this.hechizos.isEmpty()) {
+	        return "No hay hechizos registrados.";
+	    }
+	    
+	    String resultado = ""; // Inicializamos un String vacío
+	    
+	    for (Hechizo h : this.hechizos) {
+	        resultado += "- " + h.getNombre() + " (Tipo: " + h.getTipo() + ", Daño Base: " + (int) h.getDaño() + ")";
+	        
+	        if (mostrarPuntaje) {
+	            resultado += " -> [PUNTUACIÓN CALCULADA: " + h.calcularPuntaje() + "]";
+	        }
+	        resultado += "\n";
+	    }
+	    
+	    return resultado;
 	    
 	}
 
@@ -121,6 +137,27 @@ public class SistemaImpl implements ISistema{
 	
 	@Override
 	public String obtenerRegistroMagosTexto(boolean mostrarPuntaje) {
+		if (this.magos.isEmpty()) {
+	        return "No hay magos registrados.";
+	    }
+	    
+	    String resultado = ""; // Inicializamos un String vacío
+	    
+	    for (Mago m : this.magos) {
+	        resultado += "- Mago: " + m.getNombre();
+	        
+	        if (mostrarPuntaje) {
+	            resultado += " -> [PUNTUACIÓN TOTAL ACUMULADA: " + m.calcularPuntaje() + "]";
+	        }
+	        resultado += "\n  Hechizos que posee:\n";
+	        
+	        for (Hechizo h : m.getHechizos()) {
+	            resultado += "    * " + h.getNombre() + " (" + h.getTipo() + ")\n";
+	        }
+	        resultado += "\n"; 
+	    }
+	    
+	    return resultado;
 	   
 	}
 	
