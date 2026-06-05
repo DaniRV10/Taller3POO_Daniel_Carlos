@@ -18,4 +18,6 @@ public interface ISistema {
     boolean eliminarHechizo(Hechizo h);
     
     
+    
+    
 }

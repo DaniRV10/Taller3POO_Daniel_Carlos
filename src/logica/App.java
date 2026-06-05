@@ -29,7 +29,7 @@ public class App {
 			System.out.println("1. Menu Administrador");
 			System.out.println("2. Menu Analista");
 			System.out.println("3. Salir");
-			System.out.print(">");
+			System.out.print("> ");
 			opcion = sc.nextLine();
 			
 			switch (opcion) {
@@ -65,7 +65,7 @@ public class App {
 			System.out.println("5. Modificar Hechizo");
 			System.out.println("6. Eliminar Hechizo");
 			System.out.println("7. Volver al menu principal");
-			System.out.print(">");
+			System.out.print("> ");
 			
 			opcion = sc.nextLine();
 			switch (opcion) {
@@ -126,12 +126,246 @@ public class App {
 	}
 	
 	private static void nuevoHechizo() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("==== CREANDO UN NUEVO HECHIZO ====");
+		System.out.print("Ingrese el nombre del nuevo hechizo: ");
+	    String nombreH = sc.nextLine().trim();
+	    if (s.buscarHechizo(nombreH) != null) {
+	        System.out.println("Error: Ya existe un hechizo registrado con el nombre '" + nombreH + "'.");
+	        return;
+	    }
+	    System.out.print("Ingrese el tipo de elemento (Fuego, Tierra, Planta, Agua): ");
+	    String tipo = sc.nextLine().trim();
+	    
+	    // Normalizamos la primera letra en mayúscula y el resto en minuscula (ej: "fuego" -> "Fuego")
+	    if (!tipo.isEmpty()) {
+	        tipo = tipo.substring(0, 1).toUpperCase() + tipo.substring(1).toLowerCase();
+	    }
+
+	    if (!tipo.equals("Fuego") && !tipo.equals("Tierra") && !tipo.equals("Planta") && !tipo.equals("Agua")) {
+	        System.out.println("Error: El tipo '" + tipo + "' no es válido. Operación cancelada.");
+	        return;
+	    }
+	 // 3. Capturar los atributos numéricos con Try-Catch para evitar caídas
+	    try {
+	        System.out.print("Ingrese la cantidad de daño base: ");
+	        double daño = Double.parseDouble(sc.nextLine().trim());
+	        if (daño < 0) {
+	            System.out.println("Error: El daño no puede ser negativo.");
+	            return;
+	        }
+	        Hechizo nuevoHechizo = null;
+
+	        // 4. Solicitar datos específicos según la subclase elegida
+	        switch (tipo) {
+	            case "Fuego":
+	                System.out.print("Ingrese la duración de la quemadura: ");
+	                double durQ = Double.parseDouble(sc.nextLine().trim());
+	                nuevoHechizo = new HechizoFuego(nombreH, tipo, daño, durQ);
+	                break;
+
+	            case "Tierra":
+	                System.out.print("Ingrese el valor de mejora de defensa: ");
+	                double mejD = Double.parseDouble(sc.nextLine().trim());
+	                nuevoHechizo = new HechizoTierra(nombreH, tipo, daño, mejD);
+	                break;
+
+	            case "Planta":
+	                System.out.print("Ingrese la duración del stun: ");
+	                double durS = Double.parseDouble(sc.nextLine().trim());
+	                System.out.print("Ingrese la cantidad de plantas: ");
+	                double cantP = Double.parseDouble(sc.nextLine().trim());
+	                nuevoHechizo = new HechizoPlanta(nombreH, tipo, daño, durS, cantP);
+	                break;
+
+	            case "Agua":
+	                System.out.print("Ingrese la cantidad de curación (Heal): ");
+	                double cantH = Double.parseDouble(sc.nextLine().trim());
+	                System.out.print("Ingrese el valor de la presión del agua: ");
+	                double presion = Double.parseDouble(sc.nextLine().trim());
+	                nuevoHechizo = new HechizoAgua(nombreH, tipo, daño, cantH, presion);
+	                break;
+	        }
+
+	        // 5. Guardar en el sistema y actualizar la base de datos física (.txt)
+	        if (nuevoHechizo != null) {
+	            s.agregarHechizo(nuevoHechizo);
+	            s.actualizarDatos(); // Reescribe el txt de hechizos automáticamente
+	            System.out.println("¡El hechizo '" + nombreH + "' (" + tipo + ") fue creado y guardado exitosamente!");
+	        }
+
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error de formato: Ha ingresado un texto o carácter inválido en un campo numérico.");
+	        System.out.println("Operación cancelada. Inténtelo nuevamente.");
+	    }
+	    
+	    
+	    
 	}
 
 	private static void modificarHechizo() {
-		// TODO Auto-generated method stub
+		System.out.println("\n===== MODIFICANDO HECHIZO =====");
+	    
+	    // 1. Mostrar la lista numerada de hechizos
+	    ArrayList<Hechizo> listaGlobal = s.getHechizos();
+	    if (listaGlobal.isEmpty()) {
+	        System.out.println("No hay hechizos registrados en el sistema.");
+	        return;
+	    }
+
+	    for (int i = 0; i < listaGlobal.size(); i++) {
+	        Hechizo hechizo = listaGlobal.get(i);
+	        System.out.println((i + 1) + ". " + hechizo.getNombre() + " (" + hechizo.getTipo() + ")");
+	    }
+	    System.out.print("Seleccione el número del hechizo a modificar: ");
+	    
+	    Hechizo h = null;
+	    try {
+	        int indice = Integer.parseInt(sc.nextLine().trim()) - 1;
+	        if (indice >= 0 && indice < listaGlobal.size()) {
+	            h = listaGlobal.get(indice);
+	        } else {
+	            System.out.println("Error: Número fuera de rango.");
+	            System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	            return;
+	        }
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Ingrese un número válido.");
+	        System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	        return;
+	    }
+
+	    // 2. Mostrar menú dinámico con TODAS las opciones detalladas por tipo
+	    System.out.println("Modificando Hechizo: " + h.getNombre() + " (" + h.getTipo() + ")");
+	    System.out.println("1. Modificar todo del hechizo");
+	    System.out.println("2. Modificar SOLO Daño Base ");
+	    
+	    if (h instanceof HechizoFuego f) {
+	        System.out.println("3. Modificar SOLO Duración Quemadura ");
+	    } else if (h instanceof HechizoTierra t) {
+	        System.out.println("3. Modificar SOLO Mejora de Defensa");
+	    } else if (h instanceof HechizoPlanta p) {
+	        System.out.println("3. Modificar EFECTOS DE PLANTA juntos (Stun y Cant. Plantas)");
+	        System.out.println("4. Modificar SOLO Duración Stun");
+	        System.out.println("5. Modificar SOLO Cantidad de Plantas");
+	    } else if (h instanceof HechizoAgua a) {
+	        System.out.println("3. Modificar EFECTOS DE AGUA juntos (Heal y Presión)");
+	        System.out.println("4. Modificar SOLO Cantidad de Heal");
+	        System.out.println("5. Modificar SOLO Presión de Agua");
+	    }
+	    
+	    System.out.print("Seleccione una opción: ");
+	    String opcionMod = sc.nextLine().trim();
+
+	    // 3. Procesar los cambios con try-catch
+	    try {
+	        // --- OPCIÓN COMÚN 2: SOLO DAÑO BASE ---
+	        if (opcionMod.equals("2")) {
+	            System.out.print("Ingrese nuevo daño base: ");
+	            h.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            System.out.println("¡Daño base actualizado!");
+	        }
+	        
+	        // --- PROCESAMIENTO ESPECÍFICO DE FUEGO ---
+	        else if (h instanceof HechizoFuego f) {
+	            if (opcionMod.equals("1")) {
+	                System.out.print("Ingrese nuevo daño base: ");
+	                f.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.print("Ingrese nueva duración de quemadura: ");
+	                f.setDuracionQuemadura(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Hechizo actualizado por completo!");
+	            } else if (opcionMod.equals("3")) {
+	                System.out.print("Ingrese nueva duración de quemadura: ");
+	                f.setDuracionQuemadura(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Duración de quemadura actualizada!");
+	            } else {
+	                System.out.println("Opción inválida.");
+	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                return;
+	            }
+	        }
+	        
+	        // --- PROCESAMIENTO ESPECÍFICO DE TIERRA ---
+	        else if (h instanceof HechizoTierra t) {
+	            if (opcionMod.equals("1")) {
+	                System.out.print("Ingrese nuevo daño base: ");
+	                t.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.print("Ingrese nueva mejora de defensa: ");
+	                t.setMejoraDefensa(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Hechizo actualizado por completo!");
+	            } else if (opcionMod.equals("3")) {
+	                System.out.print("Ingrese nueva mejora de defensa: ");
+	                t.setMejoraDefensa(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Mejora de defensa actualizada!");
+	            } else {
+	                System.out.println("Opción inválida.");
+	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                return;
+	            }
+	        }
+	        
+	        // --- PROCESAMIENTO ESPECÍFICO DE PLANTA ---
+	        else if (h instanceof HechizoPlanta p) {
+	            if (opcionMod.equals("1")) {
+	                System.out.print("Ingrese nuevo daño base: ");
+	                p.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            }
+	            
+	            if (opcionMod.equals("1") || opcionMod.equals("3")) {
+	                System.out.print("Ingrese nueva duración de stun: ");
+	                p.setDuracionStun(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.print("Ingrese nueva cantidad de plantas: ");
+	                p.setCantPlantas(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Efectos de planta actualizados!");
+	            } else if (opcionMod.equals("4")) {
+	                System.out.print("Ingrese nueva duración de stun: ");
+	                p.setDuracionStun(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Duración de stun actualizada!");
+	            } else if (opcionMod.equals("5")) {
+	                System.out.print("Ingrese nueva cantidad de plantas: ");
+	                p.setCantPlantas(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Cantidad de plantas actualizada!");
+	            } else {
+	                System.out.println("Opción inválida.");
+	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                return;
+	            }
+	        }
+	        
+	        // --- PROCESAMIENTO ESPECÍFICO DE AGUA ---
+	        else if (h instanceof HechizoAgua a) {
+	            if (opcionMod.equals("1")) {
+	                System.out.print("Ingrese nuevo daño base: ");
+	                a.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            }
+	            
+	            if (opcionMod.equals("1") || opcionMod.equals("3")) {
+	                System.out.print("Ingrese nueva cantidad de curación (Heal): ");
+	                a.setCantHeal(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.print("Ingrese nueva presión de agua: ");
+	                a.setPresionAgua(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Efectos de agua actualizados!");
+	            } else if (opcionMod.equals("4")) {
+	                System.out.print("Ingrese nueva cantidad de curación (Heal): ");
+	                a.setCantHeal(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Cantidad de Heal actualizada!");
+	            } else if (opcionMod.equals("5")) {
+	                System.out.print("Ingrese nueva presión de agua: ");
+	                a.setPresionAgua(Double.parseDouble(sc.nextLine().trim()));
+	                System.out.println("¡Presión de agua actualizada!");
+	            } else {
+	                System.out.println("Opción inválida.");
+	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                return;
+	            }
+	        }
+
+	        // 4. Guardar los cambios directamente en el archivo
+	        s.actualizarDatos();
+	        
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Formato numérico incorrecto. Los cambios no fueron aplicados.");
+	        System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	    }
 		
 	}
 
@@ -141,7 +375,7 @@ public class App {
 	}
 
 	private static void nuevoMago() {
-		System.out.println("Creando un nuevo mago...");
+		System.out.println("==== CREANDO UN NUEVO MAGO ====");
 		System.out.print("Ingrese el nombre del mago: ");
 		String nombreM = sc.nextLine().trim();
 		if (s.buscarMago(nombreM)!=null) {

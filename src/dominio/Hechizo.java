@@ -23,6 +23,9 @@ public abstract class Hechizo implements Calculable {
 	public double getDaño() {
 		return daño;
 	}
+	public void setDaño(double daño) {
+	    this.daño = daño;
+	}
 
 	public abstract String datosParaTXT();
 	
