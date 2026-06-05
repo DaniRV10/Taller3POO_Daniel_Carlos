@@ -43,7 +43,21 @@ public class SistemaImpl implements ISistema{
 	
 	@Override
 	public boolean eliminarHechizo(Hechizo h) {
-		return this.hechizos.remove(h);
+		if (h == null) return false;
+
+	    // 1. Primero removemos el hechizo de todos los magos buscando por NOMBRE
+	    for (Mago m : this.magos) {
+	        // Recorremos los hechizos del mago al revés para evitar errores al remover elementos de la lista
+	        ArrayList<Hechizo> hechizosMago = m.getHechizos();
+	        for (int i = hechizosMago.size() - 1; i >= 0; i--) {
+	            if (hechizosMago.get(i).getNombre().equalsIgnoreCase(h.getNombre())) {
+	                hechizosMago.remove(i); // Lo borra de la lista del mago de forma segura
+	            }
+	        }
+	    }
+
+	    // 2. Ahora lo removemos de la lista global del catálogo
+	    return this.hechizos.remove(h);
 	}
 
 

@@ -370,7 +370,122 @@ public class App {
 	}
 
 	private static void modificarMago() {
-		// TODO Auto-generated method stub
+		System.out.println("\n===== MODIFICAR MAGO =====");
+	    
+	    // 1. Mostrar la lista numerada de magos registrados
+	    ArrayList<Mago> listaMagos = s.getMagos();
+	    if (listaMagos.isEmpty()) {
+	        System.out.println("No hay magos registrados en el sistema.");
+	        return;
+	    }
+
+	    for (int i = 0; i < listaMagos.size(); i++) {
+	        System.out.println((i + 1) + ". " + listaMagos.get(i).getNombre());
+	    }
+	    System.out.print("Seleccione el número del mago a modificar: ");
+	    
+	    Mago m = null;
+	    try {
+	        int indice = Integer.parseInt(sc.nextLine().trim()) - 1;
+	        if (indice >= 0 && indice < listaMagos.size()) {
+	            m = listaMagos.get(indice);
+	        } else {
+	            System.out.println("Error: Número fuera de rango.");
+	            return;
+	        }
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Ingrese un número válido.");
+	        return;
+	    }
+
+	    // 2. Sub-bucle de modificación interactiva para el mago seleccionado
+	    boolean finalizarModificacion = false;
+	    while (!finalizarModificacion) {
+	        System.out.println("\n-------------------------------------------");
+	        System.out.println("Modificando Mago: " + m.getNombre().toUpperCase());
+	        System.out.println("Hechizos actuales: ");
+	        if (m.getHechizos().isEmpty()) {
+	            System.out.println("  [Ninguno]");
+	        } else {
+	            for (Hechizo h : m.getHechizos()) {
+	                System.out.println("  - " + h.getNombre() + " (" + h.getTipo() + ")");
+	            }
+	        }
+	        System.out.println("-------------------------------------------");
+	        System.out.println("1. Cambiar nombre del mago");
+	        System.out.println("2. Agregarle un hechizo");
+	        System.out.println("3. Eliminarle un hechizo");
+	        System.out.println("4. Terminar modificacion");
+	        System.out.print("Seleccione una opción: ");
+	        
+	        String subOpcion = sc.nextLine().trim();
+	        
+	        switch (subOpcion) {
+	            case "1":
+	                System.out.print("Ingrese el nuevo nombre para el mago: ");
+	                String nuevoNombre = sc.nextLine().trim();
+	                
+	                if (nuevoNombre.isEmpty()) {
+	                    System.out.println("Error: El nombre no puede estar vacío.");
+	                } else if (s.buscarMago(nuevoNombre) != null && !nuevoNombre.equalsIgnoreCase(m.getNombre())) {
+	                    System.out.println("Error: Ya existe otro mago registrado con el nombre '" + nuevoNombre + "'.");
+	                } else {
+	                    m.setNombre(nuevoNombre);
+	                    s.actualizarDatos(); // Persistencia inmediata en el archivo txt
+	                    System.out.println("¡Nombre modificado exitosamente!");
+	                }
+	                break;
+	                
+	            case "2":
+	                // Utilizamos el selector que oculta los hechizos que el mago ya posee
+	                Hechizo hechizoAAñadir = seleccionarHechizo(m);
+	                if (hechizoAAñadir != null) {
+	                    m.agregarHechizo(hechizoAAñadir);
+	                    s.actualizarDatos();
+	                    System.out.println("¡Hechizo '" + hechizoAAñadir.getNombre() + "' agregado con éxito!");
+	                } else {
+	                    System.out.println("Operación cancelada o no hay hechizos nuevos disponibles.");
+	                }
+	                break;
+	                
+	            case "3":
+	                // Validar la regla de negocio: al menos 1 hechizo obligatorio
+	                if (m.getHechizos().size() <= 1) {
+	                    System.out.println("Error: El mago solo posee 1 hechizo. Por regla de negocio, no puede quedar sin hechizos.");
+	                    break;
+	                }
+	                
+	                System.out.println("\n--- SELECCIONE EL HECHIZO A ELIMINAR ---");
+	                ArrayList<Hechizo> hechizosMago = m.getHechizos();
+	                for (int i = 0; i < hechizosMago.size(); i++) {
+	                    System.out.println((i + 1) + ". " + hechizosMago.get(i).getNombre());
+	                }
+	                System.out.print("Ingrese el número del hechizo que desea quitarle: ");
+	                
+	                try {
+	                    int idxH = Integer.parseInt(sc.nextLine().trim()) - 1;
+	                    if (idxH >= 0 && idxH < hechizosMago.size()) {
+	                        Hechizo removido = hechizosMago.remove(idxH); // Remueve por índice de la lista del mago
+	                        s.actualizarDatos();
+	                        System.out.println("¡Hechizo '" + removido.getNombre() + "' removido del mago exitosamente!");
+	                    } else {
+	                        System.out.println("Error: Número fuera de rango.");
+	                    }
+	                } catch (NumberFormatException e) {
+	                    System.out.println("Error: Entrada inválida.");
+	                }
+	                break;
+	                
+	            case "4":
+	                System.out.println("Finalizando los cambios para " + m.getNombre() + "...");
+	                finalizarModificacion = true;
+	                break;
+	                
+	            default:
+	                System.out.println("Opción inválida. Intente nuevamente.");
+	                break;
+	        }
+	    }
 		
 	}
 

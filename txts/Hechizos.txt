@@ -81,7 +81,7 @@ Giro Fuego;Fuego;119;2
 Latigazo;Planta;93;1,1
 Envite Igneo;Fuego;47;4
 Patada Ígnea;Fuego;82;1
-Fuego Sagrado;Fuego;50;5
+Fuego Sagrado;Fuego;38;5
 Hoja Mágica;Planta;52;1,10
 Mazazo;Planta;105;1,2
 Ataque Arena;Tierra;102;40
