@@ -666,47 +666,15 @@ public class App {
 	// MOSTRAR TODOS LOS HECHIZOS 
 	private static void analistaMostrarTodosHechizos(boolean mostrarPuntaje) {
 		System.out.println("===== CATALOGO GENERAL DE HECHIZOS =====");
-		ArrayList<Hechizo> lista = s.getHechizos();
-		    
-		if (lista.isEmpty()) {
-			System.out.println("No hay hechizos registrados.");
-			return;
-		}
-
-		for (Hechizo h : lista) {
-			String info = "- " + h.getNombre() + " (Tipo: " + h.getTipo() + ", Daño Base: " + (int)h.getDaño() + ")";
-			if (mostrarPuntaje) { //EN CASO DE PEDIR PUNTAJE
-				info += " -> [PUNTUACIÓN CALCULADA: " + h.calcularPuntaje() + "]";
-			}
-			System.out.println(info);
-		
-		
-		}
+	    System.out.print(s.obtenerCatalogoHechizosTexto(mostrarPuntaje));
 	}
 
 	// MOSTRAR TODOS LOS MAGOS 
 	private static void analistaMostrarTodosMagos(boolean mostrarPuntaje) {
-	    System.out.println("===== REGISTRO GENERAL DE MAGOS =====");
-	    ArrayList<Mago> lista = s.getMagos();
-	    
-	    if (lista.isEmpty()) {
-	        System.out.println("No hay magos registrados.");
-	        return;
+		System.out.println("===== REGISTRO GENERAL DE MAGOS =====");
+	    System.out.print(s.obtenerRegistroMagosTexto(mostrarPuntaje));
 	    }
-
-	    for (Mago m : lista) {
-	        System.out.print("- Mago: " + m.getNombre());
-	        if (mostrarPuntaje) {//EN CASO DE PEDIR PUNTAJE
-	            System.out.println(" -> PUNTUACIÓN TOTAL ACCUMULADA: " + m.calcularPuntaje() );
-	        }
-	        System.out.println(" Hechizos que posee:");
-	        
-	        for (Hechizo h : m.getHechizos()) {
-	            System.out.println("    * " + h.getNombre() + " (" + h.getTipo() + ")");
-	        }
-	        System.out.println(); 
-	    }
-	}
+	
 
 	//LECTURA ARCHIVOS
 
