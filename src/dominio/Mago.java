@@ -53,7 +53,14 @@ public class Mago implements Calculable {
 		return total;
 	}
 
+	public boolean removerHechizoPorIndice(int indice) {
+    if (indice >= 0 && indice < this.hechizos.size()) {
+        this.hechizos.remove(indice);
+        return true;
+    } 
 	
+    return false;
+}
 }
 
 

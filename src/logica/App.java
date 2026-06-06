@@ -465,18 +465,19 @@ public class App {
 	                System.out.print("Ingrese el número del hechizo que desea quitarle: ");
 	                
 	                try {
-	                    int idxH = Integer.parseInt(sc.nextLine().trim()) - 1;
-	                    if (idxH >= 0 && idxH < hechizosMago.size()) {
-	                        Hechizo removido = hechizosMago.remove(idxH); // Remueve por índice de la lista del mago
-	                        s.actualizarDatos();
-	                        System.out.println("¡Hechizo '" + removido.getNombre() + "' removido del mago exitosamente!");
-	                    } else {
-	                        System.out.println("Error: Número fuera de rango.");
-	                    }
-	                } catch (NumberFormatException e) {
-	                    System.out.println("Error: Entrada inválida.");
-	                    System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
-	                }
+						int idxH = Integer.parseInt(sc.nextLine().trim()) - 1;
+						if (idxH >= 0 && idxH < m.getHechizos().size()) {
+							String nombreRemovido = m.getHechizos().get(idxH).getNombre();
+							m.removerHechizoPorIndice(idxH); // Invocación encapsulada
+							s.actualizarDatos();
+							System.out.println("¡Hechizo '" + nombreRemovido + "' removido del mago exitosamente!");
+						} else {
+							System.out.println("Error: Número fuera de rango.");
+						}
+					} catch (NumberFormatException e) {
+						System.out.println("Error: Entrada inválida.");
+						System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+					}
 	                break;
 	                
 	            case "4":
