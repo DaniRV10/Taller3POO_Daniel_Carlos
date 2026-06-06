@@ -160,28 +160,52 @@ public class App {
 	            case "Fuego":
 	                System.out.print("Ingrese la duración de la quemadura: ");
 	                double durQ = Double.parseDouble(sc.nextLine().trim());
+	                if (durQ < 0) {
+	                    System.out.println("Error: La duración de la quemadura no puede ser negativa.");
+	                    return;
+	                }
 	                nuevoHechizo = new HechizoFuego(nombreH, tipo, daño, durQ);
 	                break;
 
 	            case "Tierra":
 	                System.out.print("Ingrese el valor de mejora de defensa: ");
 	                double mejD = Double.parseDouble(sc.nextLine().trim());
+	                if (mejD < 0) {
+	                    System.out.println("Error: La mejora de defensa no puede ser negativa.");
+	                    return;
+	                }
 	                nuevoHechizo = new HechizoTierra(nombreH, tipo, daño, mejD);
 	                break;
 
 	            case "Planta":
 	                System.out.print("Ingrese la duración del stun: ");
 	                double durS = Double.parseDouble(sc.nextLine().trim());
+	                if (durS < 0) {
+	                    System.out.println("Error: La duración del stun no puede ser negativa.");
+	                    return;
+	                }
 	                System.out.print("Ingrese la cantidad de plantas: ");
 	                double cantP = Double.parseDouble(sc.nextLine().trim());
+	                if (cantP < 0) {
+	                    System.out.println("Error: La cantidad de plantas no puede ser negativa.");
+	                    return;
+	                }
 	                nuevoHechizo = new HechizoPlanta(nombreH, tipo, daño, durS, cantP);
 	                break;
 
 	            case "Agua":
 	                System.out.print("Ingrese la cantidad de curación (Heal): ");
 	                double cantH = Double.parseDouble(sc.nextLine().trim());
+	                if (cantH < 0) {
+	                    System.out.println("Error: La cantidad de curación no puede ser negativa.");
+	                    return;
+	                }
 	                System.out.print("Ingrese el valor de la presión del agua: ");
 	                double presion = Double.parseDouble(sc.nextLine().trim());
+	                if (presion < 0) {
+	                    System.out.println("Error: La presión del agua no puede ser negativa.");
+	                    return;
+	                }
 	                nuevoHechizo = new HechizoAgua(nombreH, tipo, daño, cantH, presion);
 	                break;
 	        }
