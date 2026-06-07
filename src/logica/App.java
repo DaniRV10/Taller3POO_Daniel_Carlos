@@ -350,25 +350,44 @@ public class App {
 	        // --- OPCIÓN COMÚN 2: SOLO DAÑO BASE ---
 	        if (opcionMod.equals("2")) {
 	            System.out.print("Ingrese nuevo daño base: ");
-	            h.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            double nuevoDaño = Double.parseDouble(sc.nextLine().trim());
+	            if (nuevoDaño < 0) {
+	                System.out.println("Error: El daño base no puede ser negativo. Operación cancelada.");
+	                return; 
+	            }
+	            h.setDaño(nuevoDaño);
 	            System.out.println("¡Daño base actualizado!");
 	        }
 	        
 	        // --- PROCESAMIENTO ESPECÍFICO DE FUEGO ---
 	        else if (h instanceof HechizoFuego f) {
 	            if (opcionMod.equals("1")) {
-	                System.out.print("Ingrese nuevo daño base: ");
-	                f.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nuevo daño base: ");
+	                double nuevoDaño = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevoDaño < 0) {
+	                    System.out.println("Error: El daño base no puede ser negativo. Operación cancelada.");
+	                    return;
+	                }
 	                System.out.print("Ingrese nueva duración de quemadura: ");
-	                f.setDuracionQuemadura(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaDurQ = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaDurQ < 0) {
+	                    System.out.println("Error: La duración de la quemadura no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                f.setDaño(nuevoDaño);
+	                f.setDuracionQuemadura(nuevaDurQ);
 	                System.out.println("¡Hechizo actualizado por completo!");
 	            } else if (opcionMod.equals("3")) {
-	                System.out.print("Ingrese nueva duración de quemadura: ");
-	                f.setDuracionQuemadura(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nueva duración de quemadura: ");
+	                double nuevaDurQ = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaDurQ < 0) {
+	                    System.out.println("Error: La duración de la quemadura no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                f.setDuracionQuemadura(nuevaDurQ);
 	                System.out.println("¡Duración de quemadura actualizada!");
 	            } else {
-	                System.out.println("Opción inválida.");
-	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                System.out.println("Opción inválida. Volviendo al menú....");
 	                return;
 	            }
 	        }
@@ -376,18 +395,32 @@ public class App {
 	        // --- PROCESAMIENTO ESPECÍFICO DE TIERRA ---
 	        else if (h instanceof HechizoTierra t) {
 	            if (opcionMod.equals("1")) {
-	                System.out.print("Ingrese nuevo daño base: ");
-	                t.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nuevo daño base: ");
+	                double nuevoDaño = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevoDaño < 0) {
+	                    System.out.println("Error: El daño base no puede ser negativo. Operación cancelada.");
+	                    return;
+	                }
 	                System.out.print("Ingrese nueva mejora de defensa: ");
-	                t.setMejoraDefensa(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaMejD = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaMejD < 0) {
+	                    System.out.println("Error: La mejora de defensa no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                t.setDaño(nuevoDaño);
+	                t.setMejoraDefensa(nuevaMejD);
 	                System.out.println("¡Hechizo actualizado por completo!");
 	            } else if (opcionMod.equals("3")) {
-	                System.out.print("Ingrese nueva mejora de defensa: ");
-	                t.setMejoraDefensa(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nueva mejora de defensa: ");
+	                double nuevaMejD = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaMejD < 0) {
+	                    System.out.println("Error: La mejora de defensa no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                t.setMejoraDefensa(nuevaMejD);
 	                System.out.println("¡Mejora de defensa actualizada!");
 	            } else {
-	                System.out.println("Opción inválida.");
-	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                System.out.println("Opción inválida. Volviendo al menú....");
 	                return;
 	            }
 	        }
@@ -395,27 +428,51 @@ public class App {
 	        // --- PROCESAMIENTO ESPECÍFICO DE PLANTA ---
 	        else if (h instanceof HechizoPlanta p) {
 	            if (opcionMod.equals("1")) {
-	                System.out.print("Ingrese nuevo daño base: ");
-	                p.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nuevo daño base: ");
+	                double nuevoDaño = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevoDaño < 0) {
+	                    System.out.println("Error: El daño base no puede ser negativo. Operación cancelada.");
+	                    return;
+	                }
+	                p.setDaño(nuevoDaño);
 	            }
 	            
 	            if (opcionMod.equals("1") || opcionMod.equals("3")) {
-	                System.out.print("Ingrese nueva duración de stun: ");
-	                p.setDuracionStun(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nueva duración de stun: ");
+	                double nuevaDurS = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaDurS < 0) {
+	                    System.out.println("Error: La duración del stun no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
 	                System.out.print("Ingrese nueva cantidad de plantas: ");
-	                p.setCantPlantas(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaCantP = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaCantP < 0) {
+	                    System.out.println("Error: La cantidad de plantas no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                p.setDuracionStun(nuevaDurS);
+	                p.setCantPlantas(nuevaCantP);
 	                System.out.println("¡Efectos de planta actualizados!");
 	            } else if (opcionMod.equals("4")) {
 	                System.out.print("Ingrese nueva duración de stun: ");
-	                p.setDuracionStun(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaDurS = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaDurS < 0) {
+	                    System.out.println("Error: La duración del stun no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                p.setDuracionStun(nuevaDurS);
 	                System.out.println("¡Duración de stun actualizada!");
 	            } else if (opcionMod.equals("5")) {
 	                System.out.print("Ingrese nueva cantidad de plantas: ");
-	                p.setCantPlantas(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaCantP = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaCantP < 0) {
+	                    System.out.println("Error: La cantidad de plantas no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                p.setCantPlantas(nuevaCantP);
 	                System.out.println("¡Cantidad de plantas actualizada!");
 	            } else {
-	                System.out.println("Opción inválida.");
-	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                System.out.println("Opción inválida. Volviendo al menú....");
 	                return;
 	            }
 	        }
@@ -423,27 +480,51 @@ public class App {
 	        // --- PROCESAMIENTO ESPECÍFICO DE AGUA ---
 	        else if (h instanceof HechizoAgua a) {
 	            if (opcionMod.equals("1")) {
-	                System.out.print("Ingrese nuevo daño base: ");
-	                a.setDaño(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nuevo daño base: ");
+	                double nuevoDaño = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevoDaño < 0) {
+	                    System.out.println("Error: El daño base no puede ser negativo. Operación cancelada.");
+	                    return;
+	                }
+	                a.setDaño(nuevoDaño);
 	            }
 	            
 	            if (opcionMod.equals("1") || opcionMod.equals("3")) {
-	                System.out.print("Ingrese nueva cantidad de curación (Heal): ");
-	                a.setCantHeal(Double.parseDouble(sc.nextLine().trim()));
+	            	System.out.print("Ingrese nueva cantidad de curación (Heal): ");
+	                double nuevaCantH = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaCantH < 0) {
+	                    System.out.println("Error: La cantidad de curación no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
 	                System.out.print("Ingrese nueva presión de agua: ");
-	                a.setPresionAgua(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaPresion = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaPresion < 0) {
+	                    System.out.println("Error: La presión del agua no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                a.setCantHeal(nuevaCantH);
+	                a.setPresionAgua(nuevaPresion);
 	                System.out.println("¡Efectos de agua actualizados!");
 	            } else if (opcionMod.equals("4")) {
 	                System.out.print("Ingrese nueva cantidad de curación (Heal): ");
-	                a.setCantHeal(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaCantH = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaCantH < 0) {
+	                    System.out.println("Error: La cantidad de curación no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                a.setCantHeal(nuevaCantH);
 	                System.out.println("¡Cantidad de Heal actualizada!");
 	            } else if (opcionMod.equals("5")) {
 	                System.out.print("Ingrese nueva presión de agua: ");
-	                a.setPresionAgua(Double.parseDouble(sc.nextLine().trim()));
+	                double nuevaPresion = Double.parseDouble(sc.nextLine().trim());
+	                if (nuevaPresion < 0) {
+	                    System.out.println("Error: La presión del agua no puede ser negativa. Operación cancelada.");
+	                    return;
+	                }
+	                a.setPresionAgua(nuevaPresion);
 	                System.out.println("¡Presión de agua actualizada!");
 	            } else {
-	                System.out.println("Opción inválida.");
-	                System.out.println("No se pudo realizar la modificacion. Volviendo al menu....");
+	                System.out.println("Opción inválida. Volviendo al menú....");
 	                return;
 	            }
 	        }
