@@ -11,6 +11,10 @@ public abstract class Hechizo implements Calculable {
 		this.tipo = tipo;
 		this.daño = daño;
 	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	public String getNombre() {
 		return nombre;
