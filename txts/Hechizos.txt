@@ -1,4 +1,4 @@
-Escaldar;Agua;110;-10,360
+Escaldar;Agua;110;45,360
 Tumba Rocas;Tierra;18;40
 Polen Somnífero;Planta;81;3,10
 Bofetón Lodo;Tierra;65;24

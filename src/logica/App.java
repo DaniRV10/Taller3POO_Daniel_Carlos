@@ -76,20 +76,7 @@ public class App {
 				modificarMago();
 				break;
 			case "3":
-				System.out.print("Ingrese nombre del mago a eliminar: ");
-				String nombre = sc.nextLine();
-				Mago m = s.buscarMago(nombre);
-				if (m == null) {
-			        System.out.println("Error: El mago '" + nombre + "' no existe en el sistema.");
-			        break; // Corta el case aqui y vuelve a mostrar el menu
-			    }
-				boolean eliminado = s.eliminarMago(m);
-				if (eliminado) {
-			        s.actualizarDatos(); // Reescribe los archivos .txt
-			        System.out.println("Mago '" + nombre + "' eliminado exitosamente de los registros!");
-			    } else {
-			        System.out.println("Error: No se pudo eliminar al mago del sistema.");
-			    }
+				eliminarMago();
 				break;
 			case "4":
 				nuevoHechizo();
@@ -98,20 +85,7 @@ public class App {
 				modificarHechizo();
 				break;
 			case "6":
-				System.out.print("Ingrese nombre del hechizo a eliminar: ");
-				String nombreH = sc.nextLine();
-				Hechizo h = s.buscarHechizo(nombreH);
-				if (h == null) {
-			        System.out.println("Error: El hechizo '" + nombreH + "' no existe en el sistema.");
-			        break; // Corta el case aqui y vuelve a mostrar el menu
-			    }
-				boolean eliminadoH = s.eliminarHechizo(h);
-				if (eliminadoH) {
-			        s.actualizarDatos(); // Reescribe los archivos .txt
-			        System.out.println("Hechizo '" + nombreH + "' eliminado exitosamente de los registros!");
-			    } else {
-			        System.out.println("Error: No se pudo eliminar el hechizo del sistema.");
-			    }
+				eliminarHechizo();
 				break;
 			case "7":
 				System.out.println("Volviendo al menu principal....");
@@ -125,6 +99,97 @@ public class App {
 		
 	}
 	
+	private static void eliminarMago() {
+		System.out.println("==== ELIMINANDO MAGO ====");
+		ArrayList<Mago> listaMagos = s.getMagos();
+	    
+	    // Validamos si hay magos en el sistema
+	    if (listaMagos.isEmpty()) {
+	        System.out.println("No hay magos registrados en el sistema para eliminar.");
+	        return;
+	    }
+	    
+	    // Mostrar la lista numerada
+	    for (int i = 0; i < listaMagos.size(); i++) {
+	        System.out.println((i + 1) + ". " + listaMagos.get(i).getNombre());
+	    }
+	    System.out.print("Seleccione el número del mago a eliminar: ");
+	    try {
+	        int indiceM = Integer.parseInt(sc.nextLine().trim()) - 1;
+	        
+	        // Validación de rango (controla negativos y números mayores al tamaño de la lista)
+	        if (indiceM >= 0 && indiceM < listaMagos.size()) {
+	            Mago magoAEliminar = listaMagos.get(indiceM);
+	            String nombreMago = magoAEliminar.getNombre();
+	            
+	           
+	            boolean eliminado = s.eliminarMago(magoAEliminar);
+	            
+	            if (eliminado) {
+	                s.actualizarDatos(); // Reescribe los archivos .txt de forma inmediata
+	                System.out.println("¡Mago '" + nombreMago + "' eliminado exitosamente de los registros!");
+	            } else {
+	                System.out.println("Error: No se pudo eliminar al mago del sistema.");
+	            }
+	        } else {
+	            System.out.println("Error: El número ingresado está fuera del rango de la lista.");
+	            System.out.println("Operación cancelada. Inténtelo nuevamente.");
+	        }
+	        
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Entrada inválida. Debe ingresar estrictamente un número entero (no se permiten letras ni vacíos).");
+	        System.out.println("Operación cancelada. Inténtelo nuevamente.");
+	    }
+		
+	}
+
+	private static void eliminarHechizo() {
+		System.out.println("==== ELIMINANDO HECHIZO ====");
+	    ArrayList<Hechizo> listaHechizos = s.getHechizos();
+	    
+	    // Validamos si hay hechizos en el catálogo
+	    if (listaHechizos.isEmpty()) {
+	        System.out.println("No hay hechizos registrados en el catálogo para eliminar.");
+	        return;
+	    }
+	    
+	    // Mostrar la lista numerada con el tipo para guiar al usuario
+	    for (int i = 0; i < listaHechizos.size(); i++) {
+	        Hechizo hechizo = listaHechizos.get(i);
+	        System.out.println((i + 1) + ". " + hechizo.getNombre() + " (" + hechizo.getTipo() + ")");
+	    }
+	    System.out.print("Seleccione el número del hechizo a eliminar: ");
+	    
+	    try {
+	        int indiceH = Integer.parseInt(sc.nextLine().trim()) - 1;
+	        
+	        // Validación de rango (controla negativos y números mayores al tamaño)
+	        if (indiceH >= 0 && indiceH < listaHechizos.size()) {
+	            Hechizo hechizoAEliminar = listaHechizos.get(indiceH);
+	            String nombreHechizo = hechizoAEliminar.getNombre();
+	            
+	            // Intentamos eliminar (retornará false si viola la regla de dejar un mago en 0)
+	            boolean eliminadoH = s.eliminarHechizo(hechizoAEliminar);
+	            
+	            if (eliminadoH) {
+	                s.actualizarDatos(); // Reescribe los archivos .txt
+	                System.out.println("¡Hechizo '" + nombreHechizo + "' eliminado exitosamente de los registros!");
+	            } else {
+	               
+	                System.out.println("Operación cancelada: No se pudo eliminar el hechizo.");
+	            }
+	        } else {
+	            System.out.println("Error: El número ingresado está fuera del rango de la lista.");
+	            System.out.println("Operación cancelada. Inténtelo nuevamente.");
+	        }
+	        
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error: Entrada inválida. Debe ingresar estrictamente un número entero (no se permiten letras ni vacíos).");
+	        System.out.println("Operación cancelada. Inténtelo nuevamente.");
+	    }
+		
+	}
+
 	private static void nuevoHechizo() {
 		System.out.println("==== CREANDO UN NUEVO HECHIZO ====");
 		System.out.print("Ingrese el nombre del nuevo hechizo: ");
